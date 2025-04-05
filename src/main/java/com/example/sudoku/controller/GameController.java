@@ -34,8 +34,13 @@ public class GameController {
     public void setGame() {
         for(int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                gridPane.add(new TextField(sudoku.getRows().get(i).get(j).toString()), i, j);
-                System.out.println("entra");
+                if(sudoku.getRows().get(i).get(j) == 0) {
+                    gridPane.add(new TextField(""),i,j);
+                }
+                else {
+                    gridPane.add(new TextField(sudoku.getRows().get(i).get(j).toString()), i, j);
+                }
+
             }
         }
     }
