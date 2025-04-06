@@ -10,13 +10,14 @@ import javafx.scene.layout.GridPane;
 
 public class GameController {
     private Sudoku sudoku;
+
     @FXML
     private GridPane gridPane;
 
-
     public GameController() {
-        this.sudoku = new Sudoku(6,2,3,10);
+        this.sudoku = new Sudoku(6, 2, 3, 10); // Inicializa el Sudoku con 10 elementos aleatorios
     }
+
     @FXML
     public void initialize() {
         // Ya puedes acceder a gridPane aquí
@@ -34,7 +35,8 @@ public class GameController {
     }
 
     public void setGame() {
-        for(int i = 0; i < 6; i++) {
+        // Recorre cada celda del Sudoku y agrega un TextField
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 TextField txtField = new TextField();
                 Integer value = sudoku.getRows().get(i).get(j);
@@ -47,7 +49,7 @@ public class GameController {
                 else {
                     txtField.textProperty().addListener(new ChangeListener<String>() {
                         @Override
-                        public void changed(ObservableValue<? extends String> textObservable, String previousText, String currentTex) {
+                        public void changed(ObservableValue<? extends String> txtObservable, String previousText, String currentTex) {
                             //aqui verificamos que solo se puedan numeros del 1 al 6
                             if(currentTex.matches("[1-6]")) {
                                 //aqui ya se verifica que el numero ingresado si sea correcto en esa posicion
@@ -66,9 +68,22 @@ public class GameController {
                         }
                     });
                 }
-                gridPane.add(txtField,i,j);
+
+                // Asegura que el TextField se ajuste al tamaño de la celda del GridPane
+                txtField.setPrefWidth(Double.MAX_VALUE); // Hace que el ancho del TextField ocupe
+                txtField.setPrefHeight(Double.MAX_VALUE); // Hace que el alto del TextField ocupe
+
+                // Configura el ajuste de crecimiento para que los TextFields se expandan correctamente
+                GridPane.setHgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
+                GridPane.setVgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
+
+                // Agregar el TextField a la celda correspondiente en el GridPane
+                gridPane.add(txtField, j, i); // Nota: j es la columna, i es la fila
+                System.out.println("Añadiendo TextField en fila " + i + ", columna " + j);
+
             }
         }
     }
-
 }
+
+
