@@ -1,6 +1,8 @@
 package com.example.sudoku.controller;
 
 import com.example.sudoku.model.Sudoku;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -34,13 +36,37 @@ public class GameController {
     public void setGame() {
         for(int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if(sudoku.getRows().get(i).get(j) == 0) {
-                    gridPane.add(new TextField(""),i,j);
+                TextField txtField = new TextField();
+                Integer value = sudoku.getRows().get(i).get(j);
+                int finalI = i;
+                int finalJ = j;
+                if( value != 0) {
+                    txtField.setText(value.toString());
+                    txtField.setEditable(false);
                 }
                 else {
-                    gridPane.add(new TextField(sudoku.getRows().get(i).get(j).toString()), i, j);
+                    txtField.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> textObservable, String previousText, String currentTex) {
+                            //aqui verificamos que solo se puedan numeros del 1 al 6
+                            if(currentTex.matches("[1-6]")) {
+                                //aqui ya se verifica que el numero ingresado si sea correcto en esa posicion
+                                if(value.equals(sudoku.getTemp_rows().get(finalI).get(finalJ))) {
+                                    txtField.setText(currentTex);
+                                    txtField.setEditable(false);
+                                }
+                                else {
+                                    System.out.println("error, cambiar color de la casilla o algo");
+                                    txtField.setText("");
+                                }
+                            }
+                            else {
+                                System.out.println("Letra incorrecta, por el momento asi");
+                            }
+                        }
+                    });
                 }
-
+                gridPane.add(txtField,i,j);
             }
         }
     }
