@@ -72,7 +72,7 @@ public class Sudoku {
             return false;
     }
 
-    private boolean solve() {
+    public boolean solve() {
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++) {
                 int element = temp_rows.get(i).get(j);
@@ -144,7 +144,7 @@ public class Sudoku {
         }
     }
 
-    private void print_board(String option) {
+    public void print_board(String option) {
         ArrayList<ArrayList<Integer>> board;
 
         if (option == "original")

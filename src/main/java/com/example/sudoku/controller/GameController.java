@@ -8,67 +8,85 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 public class GameController {
     private Sudoku sudoku;
+    private ArrayList<ArrayList<Integer>> gameStatus;
+    private ArrayList<ArrayList<Integer>> solution;
     @FXML
     private GridPane gridPane;
 
 
     public GameController() {
-        this.sudoku = new Sudoku(6,2,3,10);
+
     }
+
     @FXML
     public void initialize() {
-        // Ya puedes acceder a gridPane aquí
-        System.out.println("Columnas: " + gridPane.getColumnConstraints().size());
-        System.out.println("Filas: " + gridPane.getRowConstraints().size());
+        //inicializa el Sudoku solo una vez cuando se carga la vista
+        this.sudoku = new Sudoku(6, 2, 3, 10);
 
-        // Ejemplo: recorrer todos los nodos (si ya los agregaste desde el FXML o por código)
-        for (Node node : gridPane.getChildren()) {
-            Integer row = GridPane.getRowIndex(node);
-            Integer col = GridPane.getColumnIndex(node);
-            if (row == null) row = 0;
-            if (col == null) col = 0;
-            System.out.println("Nodo en fila " + row + ", columna " + col);
+        // Obtén la solución completa
+        sudoku.copy_original_board_into_temp();
+        sudoku.solve();
+
+        //copias de las matrices para duplicados o asi
+        this.solution = new ArrayList<>();
+        for (ArrayList<Integer> row : sudoku.getTemp_rows()) {
+            ArrayList<Integer> newRow = new ArrayList<>(row);
+            this.solution.add(newRow);
         }
+
+        this.gameStatus = new ArrayList<>();
+        for (ArrayList<Integer> row : sudoku.getRows()) {
+            ArrayList<Integer> newRow = new ArrayList<>(row);
+            this.gameStatus.add(newRow);
+        }
+
+        setGame();
     }
 
     public void setGame() {
+        //limpia el grid primero
+        gridPane.getChildren().clear();
+
         for(int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 TextField txtField = new TextField();
-                Integer value = sudoku.getRows().get(i).get(j);
+                Integer value = gameStatus.get(i).get(j);
                 int finalI = i;
                 int finalJ = j;
-                if( value != 0) {
+
+                if(value != 0) {
                     txtField.setText(value.toString());
                     txtField.setEditable(false);
-                }
-                else {
+                } else {
+
                     txtField.textProperty().addListener(new ChangeListener<String>() {
                         @Override
-                        public void changed(ObservableValue<? extends String> textObservable, String previousText, String currentTex) {
-                            //aqui verificamos que solo se puedan numeros del 1 al 6
-                            if(currentTex.matches("[1-6]")) {
-                                //aqui ya se verifica que el numero ingresado si sea correcto en esa posicion
-                                if(value.equals(sudoku.getTemp_rows().get(finalI).get(finalJ))) {
-                                    txtField.setText(currentTex);
-                                    txtField.setEditable(false);
-                                }
-                                else {
-                                    System.out.println("error, cambiar color de la casilla o algo");
+                        public void changed(ObservableValue<? extends String> textObservable, String previousText, String newValue) {
+                            if (!newValue.isEmpty()) {
+                                if (newValue.matches("[1-6]")) {
+                                    // Verifica contra la solución guardada
+                                    if (Integer.parseInt(newValue) == solution.get(finalI).get(finalJ)) {
+                                        // Actualiza el estado del juego
+                                        gameStatus.get(finalI).set(finalJ, Integer.parseInt(newValue));
+                                        txtField.setEditable(false);
+                                    } else {
+                                        // Número incorrecto
+                                        txtField.setText("");
+                                    }
+                                } else {
+                                    // No es un número del 1 al 6
                                     txtField.setText("");
                                 }
-                            }
-                            else {
-                                System.out.println("Letra incorrecta, por el momento asi");
                             }
                         }
                     });
                 }
-                gridPane.add(txtField,i,j);
+                gridPane.add(txtField,j,i); // Nota: j es columna, i es fila en GridPane
             }
         }
     }
-
 }
