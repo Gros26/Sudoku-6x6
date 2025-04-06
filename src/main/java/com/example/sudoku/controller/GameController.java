@@ -53,7 +53,7 @@ public class GameController {
                             //aqui verificamos que solo se puedan numeros del 1 al 6
                             if(currentTex.matches("[1-6]")) {
                                 //aqui ya se verifica que el numero ingresado si sea correcto en esa posicion
-                                if(value.equals(sudoku.getTemp_rows().get(finalI).get(finalJ))) {
+                                if(value == (sudoku.getTemp_rows().get(finalI).get(finalJ))) {
                                     txtField.setText(currentTex);
                                     txtField.setEditable(false);
                                 }
