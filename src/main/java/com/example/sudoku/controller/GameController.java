@@ -13,7 +13,7 @@ public class GameController {
     private GridPane gridPane;
 
     public GameController() {
-        this.sudoku = new Sudoku(6, 2, 3, 10);
+        this.sudoku = new Sudoku(6, 2, 3, 10); // Inicializa el Sudoku con 10 elementos aleatorios
     }
 
     @FXML
@@ -36,8 +36,19 @@ public class GameController {
         // Recorre cada celda del Sudoku y agrega un TextField
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                // Crear el TextField con el valor de la celda
-                TextField textField = new TextField(sudoku.getRows().get(i).get(j).toString());
+                // Obtener el valor de la celda en el Sudoku
+                int cellValue = sudoku.getRows().get(i).get(j);
+
+                // Crear el TextField
+                TextField textField = new TextField();
+
+                // Si el valor es diferente de 0, establecerlo como el valor del TextField
+                if (cellValue != 0) {
+                    textField.setText(Integer.toString(cellValue));
+                    textField.setEditable(false);  // Deshabilitar la edición del TextField
+                } else {
+                    textField.setText("");  // Si el valor es 0, dejar la celda vacía
+                }
 
                 // Asegura que el TextField se ajuste al tamaño de la celda del GridPane
                 textField.setPrefWidth(Double.MAX_VALUE); // Hace que el ancho del TextField ocupe todo el espacio disponible
@@ -54,4 +65,5 @@ public class GameController {
         }
     }
 }
+
 
