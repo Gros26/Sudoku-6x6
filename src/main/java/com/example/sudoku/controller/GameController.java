@@ -14,9 +14,10 @@ public class GameController {
     private Sudoku sudoku;
     private ArrayList<ArrayList<Integer>> gameStatus;
     private ArrayList<ArrayList<Integer>> solution;
+
+
     @FXML
     private GridPane gridPane;
-
 
     public GameController() {
 
@@ -51,7 +52,8 @@ public class GameController {
         //limpia el grid primero
         gridPane.getChildren().clear();
 
-        for(int i = 0; i < 6; i++) {
+        // Recorre cada celda del Sudoku y agrega un TextField
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 TextField txtField = new TextField();
                 Integer value = gameStatus.get(i).get(j);
@@ -85,8 +87,23 @@ public class GameController {
                         }
                     });
                 }
-                gridPane.add(txtField,j,i); // Nota: j es columna, i es fila en GridPane
+
+
+                // Asegura que el TextField se ajuste al tamaño de la celda del GridPane
+                txtField.setPrefWidth(Double.MAX_VALUE); // Hace que el ancho del TextField ocupe
+                txtField.setPrefHeight(Double.MAX_VALUE); // Hace que el alto del TextField ocupe
+
+                // Configura el ajuste de crecimiento para que los TextFields se expandan correctamente
+                GridPane.setHgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
+                GridPane.setVgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
+
+                // Agregar el TextField a la celda correspondiente en el GridPane
+                gridPane.add(txtField, j, i); // Nota: j es la columna, i es la fila
+                System.out.println("Añadiendo TextField en fila " + i + ", columna " + j);
+
             }
         }
     }
 }
+
+
