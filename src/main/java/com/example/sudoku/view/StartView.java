@@ -14,6 +14,7 @@ public class StartView extends Stage {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Path.START_VIEW));
         AnchorPane pane = loader.load();
         Scene scene = new Scene(pane);
+        scene.getStylesheets().add(Path.STYLE_START_VIEW);
         this.setScene(scene);
         this.show();
     }
