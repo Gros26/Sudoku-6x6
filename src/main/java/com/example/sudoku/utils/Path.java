@@ -5,5 +5,5 @@ package com.example.sudoku.utils;
 public class Path {
     public static final String START_VIEW = "/com/example/sudoku/StartView.fxml";
     public static final String GAME_VIEW = "/com/example/sudoku/GameView.fxml";
-    public static final String STYLE_START_VIEW = Path.class.getResource("/com/example/sudoku/Style.css").toExternalForm();
+    public static final String STYLE_START_VIEW = Path.class.getResource("/com/example/sudoku/StartStyle.css").toExternalForm();
 }

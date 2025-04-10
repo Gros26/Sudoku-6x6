@@ -1,5 +1,6 @@
 package com.example.sudoku.controller;
 
+import com.example.sudoku.model.AlertHelper;
 import com.example.sudoku.model.Sudoku;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,7 +15,7 @@ public class GameController {
     private Sudoku sudoku;
     private ArrayList<ArrayList<Integer>> gameStatus;
     private ArrayList<ArrayList<Integer>> solution;
-
+    private AlertHelper alertHelper;
 
     @FXML
     private GridPane gridPane;
@@ -27,6 +28,7 @@ public class GameController {
     public void initialize() {
         //inicializa el Sudoku solo una vez cuando se carga la vista
         this.sudoku = new Sudoku(6, 2, 3, 10);
+        this.alertHelper = new AlertHelper();
 
         // Obtén la solución completa
         sudoku.copy_original_board_into_temp();
@@ -76,12 +78,13 @@ public class GameController {
                                         gameStatus.get(finalI).set(finalJ, Integer.parseInt(newValue));
                                         txtField.setEditable(false);
                                     } else {
-                                        // Número incorrecto
+                                        // Número incorrecto, no adivino bien
                                         txtField.setText("");
                                     }
                                 } else {
                                     // No es un número del 1 al 6
                                     txtField.setText("");
+                                    alertHelper.showWarning("Caracter incorrecto","Caracter incorrecto","Solo se permite el ingreso de digitos del 1 al 6");
                                 }
                             }
                         }
