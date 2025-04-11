@@ -2,12 +2,16 @@ package com.example.sudoku.controller;
 
 import com.example.sudoku.model.AlertHelper;
 import com.example.sudoku.model.Sudoku;
+import com.example.sudoku.view.GameView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import java.io.*;
 
 import java.util.ArrayList;
 
@@ -18,7 +22,15 @@ public class GameController {
     private AlertHelper alertHelper;
 
     @FXML
+    private Button ButtonExit;
+
+    @FXML
+    private Button HelpButton;
+
+    @FXML
     private GridPane gridPane;
+
+
 
     public GameController() {
 
@@ -46,6 +58,16 @@ public class GameController {
             ArrayList<Integer> newRow = new ArrayList<>(row);
             this.gameStatus.add(newRow);
         }
+
+        setGame();
+    }
+
+    public void loadSavedGame(Sudoku sudoku, ArrayList<ArrayList<Integer>> gameStatus,
+                              ArrayList<ArrayList<Integer>> solution) {
+        this.sudoku = sudoku;
+        this.gameStatus = gameStatus;
+        this.solution = solution;
+        this.alertHelper = new AlertHelper();
 
         setGame();
     }
@@ -102,10 +124,32 @@ public class GameController {
 
                 // Agregar el TextField a la celda correspondiente en el GridPane
                 gridPane.add(txtField, j, i); // Nota: j es la columna, i es la fila
-                System.out.println("Añadiendo TextField en fila " + i + ", columna " + j);
 
             }
         }
+    }
+
+    @FXML
+    void btnExit(ActionEvent event) throws IOException {
+        saveGame();
+        GameView.deleteInstance();
+    }
+
+    @FXML
+    void btnHelp(ActionEvent event) {
+
+    }
+
+    private void saveGame() throws IOException {
+        FileOutputStream fileOut = new FileOutputStream("SudokuStatus.ser");
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(sudoku);
+        out.writeObject(gameStatus);
+        out.writeObject(solution);
+        out.close();
+        fileOut.close();
+
+        System.out.println("Objeto guardado con exito");
     }
 }
 

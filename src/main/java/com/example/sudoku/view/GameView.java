@@ -37,6 +37,11 @@ public class GameView extends Stage {
         private static GameView INSTANCE;
     }
 
+    public static void deleteInstance(){
+        GameView.GameViewHolder.INSTANCE.close();
+        GameView.GameViewHolder.INSTANCE = null;
+    }
+
 
     public GameController getGameController() {
         return this.gameController;

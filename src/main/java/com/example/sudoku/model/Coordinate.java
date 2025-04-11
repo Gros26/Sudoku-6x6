@@ -1,8 +1,9 @@
 package com.example.sudoku.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Coordinate {
+public class Coordinate implements Serializable {
     public final Integer row;
     public final Integer column;
 

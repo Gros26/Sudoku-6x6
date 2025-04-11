@@ -1,12 +1,13 @@
 package com.example.sudoku.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
 
-public class Sudoku {
+public class Sudoku implements Serializable {
     private int size, block_height, block_width;
 
     ArrayList<ArrayList<Integer>> rows;
