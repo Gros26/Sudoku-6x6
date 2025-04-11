@@ -61,7 +61,7 @@ public class GameController {
                 Integer value = gameStatus.get(i).get(j);
                 int finalI = i;
                 int finalJ = j;
-
+                txtField.getStyleClass().add("grid-cell");
                 if(value != 0) {
                     txtField.setText(value.toString());
                     txtField.setEditable(false);

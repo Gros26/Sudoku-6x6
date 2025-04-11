@@ -21,4 +21,12 @@ public class Main extends Application {
         StartView.getInstance();
     }
 
+    /*
+    Falta
+    1. Que se muestre erorr algo rojo o asi cuando digite mal
+    2. Cada bloque se debe llenar con dos numero
+    3. El boton de ayuda
+    4.
+     */
+
 }
