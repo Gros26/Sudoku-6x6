@@ -40,7 +40,7 @@ public class GameController {
     @FXML
     public void initialize() {
         //inicializa el Sudoku solo una vez cuando se carga la vista
-        this.sudoku = new Sudoku(6, 2, 3, 10);
+        this.sudoku = new Sudoku(6, 2, 3, true);
         this.alertHelper = new AlertHelper();
 
         // Obtén la solución completa
@@ -193,7 +193,7 @@ public class GameController {
     @FXML
     void btnExit(ActionEvent event) throws IOException {
         saveGame();
-        GameView.deleteInstance();
+
     }
 
     @FXML
@@ -230,7 +230,7 @@ public class GameController {
             }
         }
 
-        // Si llegamos aquí, no hay celdas vacías para ayudar
+        //llegamos aquí, no hay celdas vacías para ayudar
         alertHelper.showInformation("Ayuda", "No hay más celdas vacías",
                 "Todas las celdas ya han sido completadas.");
     }
@@ -243,8 +243,7 @@ public class GameController {
         out.writeObject(solution);
         out.close();
         fileOut.close();
-
-        System.out.println("Objeto guardado con exito");
+        GameView.deleteInstance();
     }
 }
 

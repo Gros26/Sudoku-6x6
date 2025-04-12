@@ -36,7 +36,6 @@ public class StartController {
     @FXML
     void btnLoadGame(ActionEvent event) throws IOException, ClassNotFoundException {
         loadGame();
-        StartView.deleteInstance();
     }
 
     private void loadGame() throws IOException, ClassNotFoundException {
@@ -51,8 +50,7 @@ public class StartController {
         fileIn.close();
 
         GameView.getInstance().getGameController().loadSavedGame(sudoku, gameStatus, solution);
-
-        System.out.println("Juego cargado");
+        StartView.deleteInstance();
 
     }
 }
