@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="753.0" styleClass="startView" stylesheets="@GameStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sudoku.controller.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" styleClass="startView" stylesheets="@GameStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sudoku.controller.GameController">
 
     <children>
       <ImageView fitHeight="517.0" fitWidth="758.0" layoutX="-5.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@GameViewImage.png" />
+            <Image url="@WhatsApp%20Image%202025-04-11%20at%202.34.22%20PM.jpeg" />
          </image>
       </ImageView>
 
@@ -41,7 +41,7 @@
         </GridPane>
 
         <!-- Botón de ayuda centrado en la parte inferior -->
-        <Button fx:id="HelpButton" layoutX="619.0" layoutY="237.0" mnemonicParsing="false" onAction="#btnHelp" style="-fx-background-color: #007BFF;                                             -fx-font-size: 16; -fx-text-fill: white;                                             -fx-border-radius: 5; -fx-background-radius: 5;                                             -fx-cursor: hand;" text="Ayuda" />
-      <Button fx:id="ButtonExit" layoutX="619.0" layoutY="289.0" mnemonicParsing="false" onAction="#btnExit" prefHeight="39.0" prefWidth="89.0" text="Salir" />
+        <Button fx:id="HelpButton" layoutX="619.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnHelp" prefHeight="39.0" prefWidth="89.0" text="Ayuda" />
+      <Button fx:id="ButtonExit" layoutX="619.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnExit" prefHeight="39.0" prefWidth="89.0" text="Salir" />
     </children>
 </AnchorPane>

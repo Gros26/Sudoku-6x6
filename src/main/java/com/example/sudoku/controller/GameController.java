@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import java.io.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameController {
     private Sudoku sudoku;
@@ -197,7 +198,41 @@ public class GameController {
 
     @FXML
     void btnHelp(ActionEvent event) {
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 6; j++) {
+                if(gameStatus.get(i).get(j) == 0) {
+                    // Obtiene el valor de la solución para esta celda
+                    int solutionValue = solution.get(i).get(j);
 
+                    // Actualiza el estado del juego
+                    gameStatus.get(i).set(j, solutionValue);
+
+                    // Busca el TextField existente en el GridPane
+                    for (Node node : gridPane.getChildren()) {
+                        if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
+                            // Asegúrate de que sea un TextField
+                            if (node instanceof TextField) {
+                                TextField txtField = (TextField) node;
+
+                                // Actualiza el TextField con el valor de la solución
+                                txtField.setText(String.valueOf(solutionValue));
+                                txtField.setEditable(false);
+
+                                // Opcionalmente, puedes añadir una clase especial para indicar que es una ayuda
+                                txtField.getStyleClass().add("grid-cell-hint");
+
+                                // Solo ayudamos con una celda, así que salimos de la función
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Si llegamos aquí, no hay celdas vacías para ayudar
+        alertHelper.showInformation("Ayuda", "No hay más celdas vacías",
+                "Todas las celdas ya han sido completadas.");
     }
 
     private void saveGame() throws IOException {
