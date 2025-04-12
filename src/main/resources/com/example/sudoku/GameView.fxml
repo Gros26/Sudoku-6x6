@@ -8,17 +8,17 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="startView" stylesheets="@GameStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sudoku.controller.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="753.0" styleClass="startView" stylesheets="@GameStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sudoku.controller.GameController">
 
     <children>
-      <ImageView fitHeight="437.0" fitWidth="600.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="517.0" fitWidth="758.0" layoutX="-5.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@GameViewImage.png" />
          </image>
       </ImageView>
 
         <!-- GridPane para el tablero de Sudoku -->
-        <GridPane fx:id="gridPane" layoutX="50.0" layoutY="124.0" prefHeight="350.0" prefWidth="500.0">
+        <GridPane fx:id="gridPane" layoutX="54.0" layoutY="101.0" prefHeight="297.0" prefWidth="496.0">
             <columnConstraints>
                 <!-- Aquí ajustamos para que las celdas estén alineadas -->
                 <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="80.0" />
@@ -31,17 +31,17 @@
 
             <rowConstraints>
                 <!-- Ajustamos para que todas las filas tengan el mismo tamaño y sin márgenes internos -->
-                <RowConstraints minHeight="0" prefHeight="50.0" />
-                <RowConstraints minHeight="0" prefHeight="50.0" />
-                <RowConstraints minHeight="0" prefHeight="50.0" />
-                <RowConstraints minHeight="0" prefHeight="50.0" />
-                <RowConstraints minHeight="0" prefHeight="50.0" />
-                <RowConstraints minHeight="0" prefHeight="50.0" />
+                <RowConstraints minHeight="0.0" prefHeight="50.0" />
+                <RowConstraints minHeight="0.0" prefHeight="50.0" />
+                <RowConstraints minHeight="0.0" prefHeight="50.0" />
+                <RowConstraints minHeight="0.0" prefHeight="50.0" />
+                <RowConstraints minHeight="0.0" prefHeight="50.0" />
+                <RowConstraints minHeight="0.0" prefHeight="50.0" />
             </rowConstraints>
         </GridPane>
 
         <!-- Botón de ayuda centrado en la parte inferior -->
-        <Button fx:id="HelpButton" layoutX="267.0" layoutY="493.0" mnemonicParsing="false" onAction="#btnHelp" style="-fx-background-color: #007BFF;                                             -fx-font-size: 16; -fx-text-fill: white;                                             -fx-border-radius: 5; -fx-background-radius: 5;                                             -fx-cursor: hand;" text="Ayuda" />
-      <Button fx:id="ButtonExit" layoutX="145.0" layoutY="512.0" mnemonicParsing="false" onAction="#btnExit" text="Salir" />
+        <Button fx:id="HelpButton" layoutX="619.0" layoutY="237.0" mnemonicParsing="false" onAction="#btnHelp" style="-fx-background-color: #007BFF;                                             -fx-font-size: 16; -fx-text-fill: white;                                             -fx-border-radius: 5; -fx-background-radius: 5;                                             -fx-cursor: hand;" text="Ayuda" />
+      <Button fx:id="ButtonExit" layoutX="619.0" layoutY="289.0" mnemonicParsing="false" onAction="#btnExit" prefHeight="39.0" prefWidth="89.0" text="Salir" />
     </children>
 </AnchorPane>
