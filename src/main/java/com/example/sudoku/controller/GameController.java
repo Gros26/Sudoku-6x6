@@ -1,6 +1,7 @@
 package com.example.sudoku.controller;
 
 import com.example.sudoku.model.AlertHelper;
+import com.example.sudoku.model.HelpButtonAdapter;
 import com.example.sudoku.model.Sudoku;
 import com.example.sudoku.view.GameView;
 import com.example.sudoku.view.TryAgainView;
@@ -223,41 +224,11 @@ public class GameController {
 
     @FXML
     void btnHelp(ActionEvent event) throws IOException {
-        for(int i = 0; i < 6; i++) {
-            for(int j = 0; j < 6; j++) {
-                if(gameStatus.get(i).get(j) == 0) {
-                    // Obtiene el valor de la solución para esta celda
-                    int solutionValue = solution.get(i).get(j);
-
-                    // Actualiza el estado del juego
-                    gameStatus.get(i).set(j, solutionValue);
-
-                    // Busca el TextField existente en el GridPane
-                    for (Node node : gridPane.getChildren()) {
-                        if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
-                            // Asegúrate de que sea un TextField
-                            if (node instanceof TextField) {
-                                TextField txtField = (TextField) node;
-
-                                // Actualiza el TextField con el valor de la solución
-                                txtField.setText(String.valueOf(solutionValue));
-                                txtField.setEditable(false);
-
-                                // Opcionalmente, puedes añadir una clase especial para indicar que es una ayuda
-                                txtField.getStyleClass().add("grid-cell-hint");
-
-                                // Solo ayudamos con una celda, así que salimos de la función
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        TryAgainView.getInstance().getController().setGameResult(true);
-        GameView.deleteInstance();
+        // Usamos el adaptador para mostrar la solución
+        HelpButtonAdapter helpAdapter = new HelpButtonAdapter(gameStatus, solution, gridPane);
+        helpAdapter.showHelp();
     }
+
 
     private void saveGame() throws IOException {
         FileOutputStream fileOut = new FileOutputStream("SudokuStatus.ser");
