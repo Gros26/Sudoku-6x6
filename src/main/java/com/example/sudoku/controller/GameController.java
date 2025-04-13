@@ -78,6 +78,7 @@ public class GameController {
     }
 
     public void setGame() {
+        correctCellsCount = 0;
         // Limpia el grid primero
         gridPane.getChildren().clear();
 
@@ -140,6 +141,7 @@ public class GameController {
                 if (value != 0) {
                     txtField.setText(value.toString());
                     txtField.setEditable(false);
+                    correctCellsCount++;
                 } else {
                     txtField.textProperty().addListener(new ChangeListener<String>() {
                         @Override
@@ -232,21 +234,18 @@ public class GameController {
                     // Actualiza el estado del juego
                     gameStatus.get(i).set(j, solutionValue);
 
-                    // Busca el TextField existente en el GridPane
+
                     for (Node node : gridPane.getChildren()) {
                         if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
-                            // Asegúrate de que sea un TextField
+
                             if (node instanceof TextField) {
                                 TextField txtField = (TextField) node;
 
-                                // Actualiza el TextField con el valor de la solución
                                 txtField.setText(String.valueOf(solutionValue));
                                 txtField.setEditable(false);
 
-                                // Opcionalmente, puedes añadir una clase especial para indicar que es una ayuda
-                                txtField.getStyleClass().add("grid-cell-hint");
 
-                                // Solo ayudamos con una celda, así que salimos de la función
+                                System.out.println(correctCellsCount);
                                 return;
                             }
                         }
