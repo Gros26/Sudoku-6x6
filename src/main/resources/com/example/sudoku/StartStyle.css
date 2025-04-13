@@ -1,10 +1,13 @@
-Button { -fx-background-color: #008287;
-    -fx-border-color: #FFFFFF;
+Button {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #a600ff, #5a00b1); /* morado neón degradado */
+    -fx-border-color: #d4a6ff; /* borde suave morado claro */
     -fx-border-width: 2;
-    -fx-text-fill: #FFFFFF;
-    -fx-font-family: "Times New Roman";
-    -fx-font-style: italic;
-    -fx-font-size: 28px;
-    -fx-background-radius: 10 10 10 10;
-    -fx-border-radius: 10 10 10 10;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif; /* fuente más moderna */
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(gaussian, #a600ff, 10, 0.5, 0, 0); /* efecto neón */
+    -fx-padding: 10 20 10 20;
 }
