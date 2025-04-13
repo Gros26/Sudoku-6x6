@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="525.0" stylesheets="@TryAgainViewStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sudoku.controller.TryAgainController">
+   <children>
+      <ImageView fitHeight="300.0" fitWidth="531.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@TryAgainImage.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="buttonTryAgain" layoutX="186.0" layoutY="186.0" mnemonicParsing="false" onAction="#btnTryAgain" prefHeight="43.0" prefWidth="155.0" text="Jugar de nuevo" />
+      <Button fx:id="buttonExit" layoutX="186.0" layoutY="243.0" mnemonicParsing="false" onAction="#btnExit" prefHeight="43.0" prefWidth="155.0" text="Salir" />
+      <Label fx:id="txtStateGame" layoutX="85.0" layoutY="25.0" prefHeight="59.0" prefWidth="356.0" text="Label" />
+      <Label fx:id="txtGameMessage" alignment="CENTER" layoutX="85.0" layoutY="84.0" prefHeight="72.0" prefWidth="356.0" text="Label" />
+   </children>
+</AnchorPane>

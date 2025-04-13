@@ -33,7 +33,7 @@
 
 /* Estilo para las celdas cuando se insertan valores incorrectos */
 .grid-cell-incorrect {
-    -fx-background-color: rgba(80, 0, 0, 0.3);
+    -fx-background-color: rgba(80, 0, 0, 0.9);
 }
 
 /* Bordes para los bloques 2x3 */

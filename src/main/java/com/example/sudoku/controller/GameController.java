@@ -3,6 +3,7 @@ package com.example.sudoku.controller;
 import com.example.sudoku.model.AlertHelper;
 import com.example.sudoku.model.Sudoku;
 import com.example.sudoku.view.GameView;
+import com.example.sudoku.view.TryAgainView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -21,6 +22,9 @@ public class GameController {
     private ArrayList<ArrayList<Integer>> gameStatus;
     private ArrayList<ArrayList<Integer>> solution;
     private AlertHelper alertHelper;
+    private int correctCellsCount = 0;
+    private int incorrectCellsCount = 0;
+    private final int TOTAL_CELLS = 36;
 
     @FXML
     private Button ButtonExit;
@@ -96,7 +100,7 @@ public class GameController {
                 // Añade clases de estilo para los bordes de bloques
                 // Determina qué tipo de borde necesita esta celda basado en su posición
 
-                // Bordes de bloques superiores (filas 0 y 2)
+                //bordes de bloques superiores (filas 0 y 2)
                 if (i == 0 || i == 2 || i == 4) {
                     if (j == 0) {
                         txtField.getStyleClass().add("block-top-left");
@@ -110,7 +114,7 @@ public class GameController {
                         txtField.getStyleClass().add("block-top");
                     }
                 }
-                // Bordes de bloques inferiores (filas 1 y 3)
+                //bordes de bloques inferiores (filas 1 y 3)
                 else if (i == 1 || i == 3 || i == 5) {
                     if (j == 0) {
                         txtField.getStyleClass().add("block-bottom-left");
@@ -124,11 +128,11 @@ public class GameController {
                         txtField.getStyleClass().add("block-bottom");
                     }
                 }
-                // Bordes izquierdos que no son esquinas
+                //bordes izquierdos que no son esquinas
                 if ((j == 0 || j == 3) && !(i == 0 || i == 2 || i == 4 || i == 1 || i == 3 || i == 5)) {
                     txtField.getStyleClass().add("block-left");
                 }
-                // Bordes derechos que no son esquinas
+                //bordes derechos que no son esquinas
                 if ((j == 2 || j == 5) && !(i == 0 || i == 2 || i == 4 || i == 1 || i == 3 || i == 5)) {
                     txtField.getStyleClass().add("block-right");
                 }
@@ -150,6 +154,18 @@ public class GameController {
                                         // Añade clase para celda correcta
                                         txtField.getStyleClass().remove("grid-cell-incorrect");
                                         txtField.getStyleClass().add("grid-cell-correct");
+
+                                        correctCellsCount++;
+                                        if (correctCellsCount == TOTAL_CELLS) {
+                                            try {
+                                                //gano
+                                                TryAgainView.getInstance().getController().setGameResult(true);
+                                                GameView.deleteInstance();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
+
                                     } else {
                                         // Número incorrecto
                                         txtField.setText("");
@@ -167,6 +183,16 @@ public class GameController {
                                                 },
                                                 1000
                                         );
+                                        incorrectCellsCount++;
+                                        if (incorrectCellsCount == 3) {
+                                            //perdio
+                                            try {
+                                                TryAgainView.getInstance().getController().setGameResult(false);
+                                                GameView.deleteInstance();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
                                     }
                                 } else {
                                     // No es un número del 1 al 6
@@ -178,13 +204,13 @@ public class GameController {
                     });
                 }
 
-                // Ajusta el tamaño
+
                 txtField.setPrefWidth(Double.MAX_VALUE);
                 txtField.setPrefHeight(Double.MAX_VALUE);
                 GridPane.setHgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
                 GridPane.setVgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
 
-                // Agregar el TextField a la celda correspondiente en el GridPane
+
                 gridPane.add(txtField, j, i); // j es columna, i es fila
             }
         }
@@ -193,11 +219,10 @@ public class GameController {
     @FXML
     void btnExit(ActionEvent event) throws IOException {
         saveGame();
-
     }
 
     @FXML
-    void btnHelp(ActionEvent event) {
+    void btnHelp(ActionEvent event) throws IOException {
         for(int i = 0; i < 6; i++) {
             for(int j = 0; j < 6; j++) {
                 if(gameStatus.get(i).get(j) == 0) {
@@ -230,9 +255,8 @@ public class GameController {
             }
         }
 
-        //llegamos aquí, no hay celdas vacías para ayudar
-        alertHelper.showInformation("Ayuda", "No hay más celdas vacías",
-                "Todas las celdas ya han sido completadas.");
+        TryAgainView.getInstance().getController().setGameResult(true);
+        GameView.deleteInstance();
     }
 
     private void saveGame() throws IOException {
@@ -245,6 +269,7 @@ public class GameController {
         fileOut.close();
         GameView.deleteInstance();
     }
+
 }
 
 
