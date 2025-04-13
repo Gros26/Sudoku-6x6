@@ -20,6 +20,7 @@ public class GameView extends Stage {
 
         AnchorPane pane = loader.load();
         Scene scene = new Scene(pane);
+        scene.getStylesheets().add(getClass().getResource("/com/example/sudoku/GameStyle.css").toExternalForm());
         this.gameController = loader.getController();
         this.setScene(scene);
         this.show();
@@ -35,6 +36,11 @@ public class GameView extends Stage {
 
     private static class GameViewHolder {
         private static GameView INSTANCE;
+    }
+
+    public static void deleteInstance(){
+        GameView.GameViewHolder.INSTANCE.close();
+        GameView.GameViewHolder.INSTANCE = null;
     }
 
 

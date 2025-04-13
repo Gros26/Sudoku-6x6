@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+
+#txtStateGame {
+    -fx-font-family: 'Montserrat';
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 1);
+    -fx-alignment: center;
+    -fx-padding: 10px 0;
+    -fx-letter-spacing: 2px;
+}
+
+.win-title {
+    -fx-text-fill: #ffeb3b;
+}
+
+.lose-title {
+    -fx-text-fill: #ff9800;
+}
+
+#txtGameMessage {
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 15px;
+    -fx-font-weight: 300;
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 4px;
+    -fx-padding: 10px 5px;
+    -fx-pref-width: 350px;
+    -fx-min-height: 60px;
+}
+
+.button {
+    -fx-font-family: 'Montserrat';
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 12px 25px;
+    -fx-background-radius: 30px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+
+#buttonTryAgain {
+    -fx-background-color: #8e24aa;
+    -fx-border-color: #b39ddb;
+    -fx-border-width: 2px;
+    -fx-border-radius: 30px;
+}
+
+#buttonTryAgain:hover {
+    -fx-background-color: #9c27b0;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.2), 10, 0, 0, 0);
+    -fx-translate-y: -2px;
+}
+
+
+#buttonExit {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-radius: 30px;
+}
+
+#buttonExit:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.1), 5, 0, 0, 0);
+    -fx-translate-y: -2px;
+}
+
+
+.button {
+    -fx-transition: -fx-background-color 0.3s, -fx-translate-y 0.2s;
+}
+

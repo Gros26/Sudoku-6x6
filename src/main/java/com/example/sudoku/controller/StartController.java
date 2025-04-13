@@ -11,12 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 
 public class StartController {
+    private Sudoku sudoku;
 
-
+    @FXML
+    private Button ButtonContinue;
 
     @FXML
     void startGame(ActionEvent event) throws IOException {
@@ -26,11 +28,31 @@ public class StartController {
 
     @FXML
     public void initialize() {
+        File savedGame = new File("SudokuStatus.ser");
+        ButtonContinue.setDisable(!savedGame.exists());
     }
 
 
+    @FXML
+    void btnLoadGame(ActionEvent event) throws IOException, ClassNotFoundException {
+        loadGame();
+    }
 
+    private void loadGame() throws IOException, ClassNotFoundException {
+        sudoku = null;
+        FileInputStream fileIn = new FileInputStream("SudokuStatus.ser");
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        sudoku = (Sudoku) in.readObject();
+        ArrayList<ArrayList<Integer>> gameStatus = (ArrayList<ArrayList<Integer>>) in.readObject();
+        ArrayList<ArrayList<Integer>> solution = (ArrayList<ArrayList<Integer>>) in.readObject();
 
+        in.close();
+        fileIn.close();
+
+        GameView.getInstance().getGameController().loadSavedGame(sudoku, gameStatus, solution);
+        StartView.deleteInstance();
+
+    }
 }
 
 

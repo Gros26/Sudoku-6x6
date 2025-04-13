@@ -1,32 +1,97 @@
-/*
-TextField {
-    -fx-border-color: black;
-    -fx-alignment: center;
-    -fx-font-size: 30px;
-    -fx-font: bold;
-    -fx-border-width: 0px 5px 5px 0px;
-}
-*/
-
-/* Estilo para el GridPane */
-.gridPane {
+/* Estilo para el GridPane principal del Sudoku */
+.sudoku-grid {
     -fx-background-color: transparent;
-    -fx-border-color: #8a2be2; /* Color morado */
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
+    -fx-padding: 0;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
 }
 
-/* Estilo para cada celda del GridPane */
+/* Estilo base para todas las celdas del Sudoku */
 .grid-cell {
-    -fx-background-color: transparent; /* Fondo oscuro de las celdas */
-    -fx-border-color: #8a2be2; /* Borde morado */
-    -fx-border-width: 1px;
-    -fx-border-radius: 2px; /* Bordes redondeados */
-    -fx-padding: 10px; /* Espaciado interno */
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-border-color: #0000AA;
+    -fx-border-width: 0.5;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
 }
 
-/* Hover effect para las celdas */
-.grid-cell:hover {
-    -fx-background-color: transparent; /* Fondo ligeramente más claro en hover */
+/* Celdas que son parte del tablero inicial (no editables) */
+.grid-cell:disabled {
+    -fx-opacity: 1.0;
+    -fx-background-color: rgba(20, 20, 80, 0.3);
+    -fx-text-fill: white;
+}
+
+/* Estilo para las celdas cuando se insertan valores correctos */
+.grid-cell-correct {
+    -fx-background-color: rgba(0, 80, 0, 0.3);
+}
+
+/* Estilo para las celdas cuando se insertan valores incorrectos */
+.grid-cell-incorrect {
+    -fx-background-color: rgba(80, 0, 0, 0.9);
+}
+
+/* Bordes para los bloques 2x3 */
+/* Bordes superiores de los bloques */
+.block-top {
+    -fx-border-width: 2 0.5 0.5 0.5;
+}
+
+/* Bordes inferiores de los bloques */
+.block-bottom {
+    -fx-border-width: 0.5 0.5 2 0.5;
+}
+
+/* Bordes izquierdos de los bloques */
+.block-left {
+    -fx-border-width: 0.5 0.5 0.5 2;
+}
+
+/* Bordes derechos de los bloques */
+.block-right {
+    -fx-border-width: 0.5 2 0.5 0.5;
+}
+
+/* Esquinas de los bloques */
+.block-top-left {
+    -fx-border-width: 2 0.5 0.5 2;
+}
+
+.block-top-right {
+    -fx-border-width: 2 2 0.5 0.5;
+}
+
+.block-bottom-left {
+    -fx-border-width: 0.5 0.5 2 2;
+}
+
+.block-bottom-right {
+    -fx-border-width: 0.5 2 2 0.5;
+}
+
+/* Botones de la interfaz */
+.button {
     -fx-cursor: hand;
+    -fx-background-color: #222255;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #4444AA;
+    -fx-border-width: 1;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #333377;
+}
+
+.button:pressed {
+    -fx-background-color: #1A1A44;
 }

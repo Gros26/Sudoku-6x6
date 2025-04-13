@@ -2,23 +2,40 @@ package com.example.sudoku.controller;
 
 import com.example.sudoku.model.AlertHelper;
 import com.example.sudoku.model.Sudoku;
+import com.example.sudoku.view.GameView;
+import com.example.sudoku.view.TryAgainView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import java.io.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameController {
     private Sudoku sudoku;
     private ArrayList<ArrayList<Integer>> gameStatus;
     private ArrayList<ArrayList<Integer>> solution;
     private AlertHelper alertHelper;
+    private int correctCellsCount = 0;
+    private int incorrectCellsCount = 0;
+    private final int TOTAL_CELLS = 36;
+
+    @FXML
+    private Button ButtonExit;
+
+    @FXML
+    private Button HelpButton;
 
     @FXML
     private GridPane gridPane;
+
+
 
     public GameController() {
 
@@ -27,7 +44,7 @@ public class GameController {
     @FXML
     public void initialize() {
         //inicializa el Sudoku solo una vez cuando se carga la vista
-        this.sudoku = new Sudoku(6, 2, 3, 10);
+        this.sudoku = new Sudoku(6, 2, 3, true);
         this.alertHelper = new AlertHelper();
 
         // Obtén la solución completa
@@ -50,9 +67,24 @@ public class GameController {
         setGame();
     }
 
+    public void loadSavedGame(Sudoku sudoku, ArrayList<ArrayList<Integer>> gameStatus,
+                              ArrayList<ArrayList<Integer>> solution) {
+        this.sudoku = sudoku;
+        this.gameStatus = gameStatus;
+        this.solution = solution;
+        this.alertHelper = new AlertHelper();
+
+        setGame();
+    }
+
     public void setGame() {
-        //limpia el grid primero
+        // Limpia el grid primero
         gridPane.getChildren().clear();
+
+        // Aplica estilos al GridPane
+        gridPane.getStyleClass().add("sudoku-grid");
+        gridPane.setHgap(0);
+        gridPane.setVgap(0);
 
         // Recorre cada celda del Sudoku y agrega un TextField
         for (int i = 0; i < 6; i++) {
@@ -61,12 +93,54 @@ public class GameController {
                 Integer value = gameStatus.get(i).get(j);
                 int finalI = i;
                 int finalJ = j;
+
+                // Añade la clase base para todas las celdas
                 txtField.getStyleClass().add("grid-cell");
-                if(value != 0) {
+
+                // Añade clases de estilo para los bordes de bloques
+                // Determina qué tipo de borde necesita esta celda basado en su posición
+
+                //bordes de bloques superiores (filas 0 y 2)
+                if (i == 0 || i == 2 || i == 4) {
+                    if (j == 0) {
+                        txtField.getStyleClass().add("block-top-left");
+                    } else if (j == 3) {
+                        txtField.getStyleClass().add("block-top-left");
+                    } else if (j == 5) {
+                        txtField.getStyleClass().add("block-top-right");
+                    } else if (j == 2) {
+                        txtField.getStyleClass().add("block-top-right");
+                    } else {
+                        txtField.getStyleClass().add("block-top");
+                    }
+                }
+                //bordes de bloques inferiores (filas 1 y 3)
+                else if (i == 1 || i == 3 || i == 5) {
+                    if (j == 0) {
+                        txtField.getStyleClass().add("block-bottom-left");
+                    } else if (j == 3) {
+                        txtField.getStyleClass().add("block-bottom-left");
+                    } else if (j == 5) {
+                        txtField.getStyleClass().add("block-bottom-right");
+                    } else if (j == 2) {
+                        txtField.getStyleClass().add("block-bottom-right");
+                    } else {
+                        txtField.getStyleClass().add("block-bottom");
+                    }
+                }
+                //bordes izquierdos que no son esquinas
+                if ((j == 0 || j == 3) && !(i == 0 || i == 2 || i == 4 || i == 1 || i == 3 || i == 5)) {
+                    txtField.getStyleClass().add("block-left");
+                }
+                //bordes derechos que no son esquinas
+                if ((j == 2 || j == 5) && !(i == 0 || i == 2 || i == 4 || i == 1 || i == 3 || i == 5)) {
+                    txtField.getStyleClass().add("block-right");
+                }
+
+                if (value != 0) {
                     txtField.setText(value.toString());
                     txtField.setEditable(false);
                 } else {
-
                     txtField.textProperty().addListener(new ChangeListener<String>() {
                         @Override
                         public void changed(ObservableValue<? extends String> textObservable, String previousText, String newValue) {
@@ -77,9 +151,48 @@ public class GameController {
                                         // Actualiza el estado del juego
                                         gameStatus.get(finalI).set(finalJ, Integer.parseInt(newValue));
                                         txtField.setEditable(false);
+                                        // Añade clase para celda correcta
+                                        txtField.getStyleClass().remove("grid-cell-incorrect");
+                                        txtField.getStyleClass().add("grid-cell-correct");
+
+                                        correctCellsCount++;
+                                        if (correctCellsCount == TOTAL_CELLS) {
+                                            try {
+                                                //gano
+                                                TryAgainView.getInstance().getController().setGameResult(true);
+                                                GameView.deleteInstance();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
+
                                     } else {
-                                        // Número incorrecto, no adivino bien
+                                        // Número incorrecto
                                         txtField.setText("");
+                                        txtField.getStyleClass().remove("grid-cell-correct");
+                                        txtField.getStyleClass().add("grid-cell-incorrect");
+                                        // Remueve la clase después de un momento
+                                        new java.util.Timer().schedule(
+                                                new java.util.TimerTask() {
+                                                    @Override
+                                                    public void run() {
+                                                        javafx.application.Platform.runLater(() -> {
+                                                            txtField.getStyleClass().remove("grid-cell-incorrect");
+                                                        });
+                                                    }
+                                                },
+                                                1000
+                                        );
+                                        incorrectCellsCount++;
+                                        if (incorrectCellsCount == 3) {
+                                            //perdio
+                                            try {
+                                                TryAgainView.getInstance().getController().setGameResult(false);
+                                                GameView.deleteInstance();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
                                     }
                                 } else {
                                     // No es un número del 1 al 6
@@ -92,21 +205,71 @@ public class GameController {
                 }
 
 
-                // Asegura que el TextField se ajuste al tamaño de la celda del GridPane
-                txtField.setPrefWidth(Double.MAX_VALUE); // Hace que el ancho del TextField ocupe
-                txtField.setPrefHeight(Double.MAX_VALUE); // Hace que el alto del TextField ocupe
-
-                // Configura el ajuste de crecimiento para que los TextFields se expandan correctamente
+                txtField.setPrefWidth(Double.MAX_VALUE);
+                txtField.setPrefHeight(Double.MAX_VALUE);
                 GridPane.setHgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
                 GridPane.setVgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
 
-                // Agregar el TextField a la celda correspondiente en el GridPane
-                gridPane.add(txtField, j, i); // Nota: j es la columna, i es la fila
-                System.out.println("Añadiendo TextField en fila " + i + ", columna " + j);
 
+                gridPane.add(txtField, j, i); // j es columna, i es fila
             }
         }
     }
+
+    @FXML
+    void btnExit(ActionEvent event) throws IOException {
+        saveGame();
+    }
+
+    @FXML
+    void btnHelp(ActionEvent event) throws IOException {
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 6; j++) {
+                if(gameStatus.get(i).get(j) == 0) {
+                    // Obtiene el valor de la solución para esta celda
+                    int solutionValue = solution.get(i).get(j);
+
+                    // Actualiza el estado del juego
+                    gameStatus.get(i).set(j, solutionValue);
+
+                    // Busca el TextField existente en el GridPane
+                    for (Node node : gridPane.getChildren()) {
+                        if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
+                            // Asegúrate de que sea un TextField
+                            if (node instanceof TextField) {
+                                TextField txtField = (TextField) node;
+
+                                // Actualiza el TextField con el valor de la solución
+                                txtField.setText(String.valueOf(solutionValue));
+                                txtField.setEditable(false);
+
+                                // Opcionalmente, puedes añadir una clase especial para indicar que es una ayuda
+                                txtField.getStyleClass().add("grid-cell-hint");
+
+                                // Solo ayudamos con una celda, así que salimos de la función
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        TryAgainView.getInstance().getController().setGameResult(true);
+        GameView.deleteInstance();
+    }
+
+    private void saveGame() throws IOException {
+        FileOutputStream fileOut = new FileOutputStream("SudokuStatus.ser");
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(sudoku);
+        out.writeObject(gameStatus);
+        out.writeObject(solution);
+        out.close();
+        fileOut.close();
+        GameView.deleteInstance();
+    }
+
 }
 
 

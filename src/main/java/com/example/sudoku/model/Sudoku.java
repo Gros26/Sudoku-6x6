@@ -1,12 +1,14 @@
 package com.example.sudoku.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
 
-public class Sudoku {
+public class Sudoku implements Serializable {
     private int size, block_height, block_width;
 
     ArrayList<ArrayList<Integer>> rows;
@@ -18,13 +20,20 @@ public class Sudoku {
     ArrayList<Coordinate> available_cells;
 
 
-    public Sudoku(int size, int block_height, int block_width, int random_elements) {
+    public Sudoku(int size, int block_height, int block_width, boolean useFixedDistribution) {
         this.size = size;
         this.block_height = block_height;
         this.block_width = block_width;
 
         initialization();
-        fill_randomly(random_elements);
+
+        if (useFixedDistribution) {
+            fillWithTwoCellsPerBlock();
+        } else {
+            // El número de celdas aleatorias por defecto, por ejemplo 12 para un 6x6
+            int defaultRandomElements = 12;
+            fill_randomly(defaultRandomElements);
+        }
     }
 
     private void initialization() {
@@ -70,6 +79,87 @@ public class Sudoku {
             return true;
         } else
             return false;
+    }
+
+    // Optimiza el método de generación
+    private void fillWithTwoCellsPerBlock() {
+        // Limpia el tablero primero
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                rows.get(i).set(j, 0);
+                columns.get(j).set(i, 0);
+            }
+        }
+
+        // Genera una solución completa primero
+        copy_original_board_into_temp();
+        solve();
+
+        // Copia la solución al tablero principal
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                rows.get(i).set(j, temp_rows.get(i).get(j));
+                columns.get(j).set(i, temp_rows.get(i).get(j));
+            }
+        }
+
+        // Ahora elimina celdas, dejando solo 2 por bloque
+        List<Coordinate> cellsToKeep = new ArrayList<>();
+
+        // Para cada bloque, selecciona 2 celdas para mantener
+        for (int blockRow = 0; blockRow < size/block_height; blockRow++) {
+            for (int blockCol = 0; blockCol < size/block_width; blockCol++) {
+                List<Coordinate> blockCells = new ArrayList<>();
+
+                int startRow = blockRow * block_height;
+                int startCol = blockCol * block_width;
+
+                // Recopila todas las celdas de este bloque
+                for (int r = startRow; r < startRow + block_height; r++) {
+                    for (int c = startCol; c < startCol + block_width; c++) {
+                        blockCells.add(new Coordinate(r, c));
+                    }
+                }
+
+                // Selecciona 2 celdas al azar para mantener
+                for (int i = 0; i < 2; i++) {
+                    if (!blockCells.isEmpty()) {
+                        int index = (int)(Math.random() * blockCells.size());
+                        cellsToKeep.add(blockCells.remove(index));
+                    }
+                }
+            }
+        }
+
+        // Ahora borra todas las celdas excepto las que queremos mantener
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Coordinate current = new Coordinate(i, j);
+                boolean keep = false;
+
+                for (Coordinate coord : cellsToKeep) {
+                    if (coord.row == i && coord.column == j) {
+                        keep = true;
+                        break;
+                    }
+                }
+
+                if (!keep) {
+                    rows.get(i).set(j, 0);
+                    columns.get(j).set(i, 0);
+                }
+            }
+        }
+
+        // Actualiza las celdas disponibles
+        available_cells.clear();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (rows.get(i).get(j) == 0) {
+                    available_cells.add(new Coordinate(i, j));
+                }
+            }
+        }
     }
 
     public boolean solve() {
