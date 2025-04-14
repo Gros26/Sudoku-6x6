@@ -14,6 +14,9 @@ import java.io.IOException;
  * It displays the screen shown to the player when the game ends, whether they won or lost.
  * The view is created and displayed by loading the corresponding FXML file.
  * It follows the Singleton design pattern to ensure only one instance of the view exists at a time.
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class TryAgainView extends Stage {
     private TryAgainController tryAgainController;

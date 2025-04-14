@@ -14,6 +14,9 @@ import java.util.Scanner;
  * and provide solutions to the puzzle.</p>
  *
  * <p>The class also handles generating random Sudoku boards and checking if the user's moves are correct.</p>
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class Sudoku implements Serializable {
     private int size, block_height, block_width;

@@ -15,6 +15,9 @@ import java.io.IOException;
  * The {@link GameView} class represents the main game screen for the Sudoku application.
  * This view is displayed when the user starts a new game, showing the Sudoku grid and associated controls.
  * It follows the Singleton design pattern to ensure that only one instance of the GameView exists at any given time.
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 2.0
  */
 public class GameView extends Stage {
     private GameController gameController;

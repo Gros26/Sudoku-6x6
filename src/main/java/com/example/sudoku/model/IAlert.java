@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
  *
  * <p>This interface is meant to standardize the way alerts are displayed throughout the application,
  * ensuring that alerts are handled consistently and appropriately across different components of the system.</p>
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public interface IAlert {
 

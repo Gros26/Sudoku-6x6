@@ -12,6 +12,9 @@ import java.util.ArrayList;
 /**
  * The HelpButtonAdapter class is responsible for handling the logic when the help button is clicked in the Sudoku game.
  * It provides assistance by filling in the empty cells with the correct solution values and checks if the player has won the game.
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class HelpButtonAdapter {
 

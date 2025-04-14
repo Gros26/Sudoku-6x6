@@ -14,6 +14,9 @@ import java.io.IOException;
  * Main class that launches the Sudoku application.
  * This class extends the {@link javafx.application.Application} class and serves
  * as the entry point for the application.
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class Main extends Application {
 

@@ -12,6 +12,8 @@ import java.io.IOException;
 /**
  * The TryAgainController handles the logic for the Try Again view, including displaying
  * the game result (win/lose) and navigating the user to the start view or exiting the game.
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class TryAgainController {
 

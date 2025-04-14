@@ -13,6 +13,9 @@ import java.io.IOException;
  * It is the initial screen shown to the player where they can start the game.
  * The view is created by loading the corresponding FXML file and applying the appropriate stylesheet.
  * The class follows the Singleton design pattern to ensure only one instance of the StartView is active at any given time.
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class StartView extends Stage {
 

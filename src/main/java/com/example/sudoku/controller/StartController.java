@@ -21,6 +21,9 @@ import java.util.ArrayList;
 /**
  * The StartController class manages the behavior of the start view of the Sudoku application.
  * It handles starting a new game and loading a previously saved game.
+ * @author Juan David Lopez
+ * @author Grosman Klein Valencia
+ * @version 1.0
  */
 public class StartController {
 
