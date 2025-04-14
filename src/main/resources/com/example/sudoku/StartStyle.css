@@ -1,5 +1,6 @@
 Button {
     -fx-background-color: #222255;
+    -fx-cursor: hand;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 5;

@@ -84,6 +84,7 @@
 
 /* Botones de la interfaz */
 .button {
+    -fx-cursor: hand;
     -fx-background-color: #222255;
     -fx-text-fill: white;
     -fx-font-weight: bold;
