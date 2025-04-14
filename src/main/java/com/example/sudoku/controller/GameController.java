@@ -1,6 +1,7 @@
 package com.example.sudoku.controller;
 
 import com.example.sudoku.model.AlertHelper;
+import com.example.sudoku.model.HelpButtonAdapter;
 import com.example.sudoku.model.Sudoku;
 import com.example.sudoku.view.GameView;
 import com.example.sudoku.view.TryAgainView;
@@ -12,11 +13,18 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import java.io.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The GameController class is responsible for managing the gameplay logic of the Sudoku application.
+ * <p>
+ * It handles initializing the Sudoku model, setting up the game grid, processing user input,
+ * validating moves, handling game outcomes, and saving the game state.
+ * </p>
+ */
 public class GameController {
     private Sudoku sudoku;
     private ArrayList<ArrayList<Integer>> gameStatus;
@@ -35,23 +43,28 @@ public class GameController {
     @FXML
     private GridPane gridPane;
 
-
-
+    /**
+     * Default constructor for GameController.
+     */
     public GameController() {
-
+        // Empty constructor; initialization is done in the initialize() method.
     }
 
+    /**
+     * Initializes the game by creating a new Sudoku instance with a fixed distribution,
+     * preparing the solution and game state arrays, and populating the grid with TextFields.
+     */
     @FXML
     public void initialize() {
-        //inicializa el Sudoku solo una vez cuando se carga la vista
+        // Initializes the Sudoku only once when the view loads.
         this.sudoku = new Sudoku(6, 2, 3, true);
         this.alertHelper = new AlertHelper();
 
-        // Obtén la solución completa
+        // Obtain the complete solution.
         sudoku.copy_original_board_into_temp();
         sudoku.solve();
 
-        //copias de las matrices para duplicados o asi
+        // Create copies of the matrices for solution and game status.
         this.solution = new ArrayList<>();
         for (ArrayList<Integer> row : sudoku.getTemp_rows()) {
             ArrayList<Integer> newRow = new ArrayList<>(row);
@@ -67,6 +80,14 @@ public class GameController {
         setGame();
     }
 
+    /**
+     * Loads a saved game by deserializing the Sudoku, game status, and solution,
+     * and then reinitializes the game grid.
+     *
+     * @param sudoku     The saved Sudoku instance.
+     * @param gameStatus The saved game state as a 2D ArrayList of Integers.
+     * @param solution   The saved solution as a 2D ArrayList of Integers.
+     */
     public void loadSavedGame(Sudoku sudoku, ArrayList<ArrayList<Integer>> gameStatus,
                               ArrayList<ArrayList<Integer>> solution) {
         this.sudoku = sudoku;
@@ -77,16 +98,24 @@ public class GameController {
         setGame();
     }
 
+    /**
+     * Populates the GridPane with TextFields representing each cell of the Sudoku board.
+     * <p>
+     * Each cell is assigned a style based on its position for visual block borders.
+     * If the cell value is non-zero, it is displayed and made non-editable; otherwise,
+     * an input listener is added to validate user input.
+     * </p>
+     */
     public void setGame() {
-        // Limpia el grid primero
+        // Clear the grid first.
         gridPane.getChildren().clear();
 
-        // Aplica estilos al GridPane
+        // Apply styles to the GridPane.
         gridPane.getStyleClass().add("sudoku-grid");
         gridPane.setHgap(0);
         gridPane.setVgap(0);
 
-        // Recorre cada celda del Sudoku y agrega un TextField
+        // Iterate over each cell in the Sudoku grid and add a TextField.
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 TextField txtField = new TextField();
@@ -94,13 +123,11 @@ public class GameController {
                 int finalI = i;
                 int finalJ = j;
 
-                // Añade la clase base para todas las celdas
+                // Add the base style class for all cells.
                 txtField.getStyleClass().add("grid-cell");
 
-                // Añade clases de estilo para los bordes de bloques
-                // Determina qué tipo de borde necesita esta celda basado en su posición
-
-                //bordes de bloques superiores (filas 0 y 2)
+                // Add style classes for cell borders based on block position.
+                // Top block borders (rows 0, 2, 4)
                 if (i == 0 || i == 2 || i == 4) {
                     if (j == 0) {
                         txtField.getStyleClass().add("block-top-left");
@@ -114,7 +141,7 @@ public class GameController {
                         txtField.getStyleClass().add("block-top");
                     }
                 }
-                //bordes de bloques inferiores (filas 1 y 3)
+                // Bottom block borders (rows 1, 3, 5)
                 else if (i == 1 || i == 3 || i == 5) {
                     if (j == 0) {
                         txtField.getStyleClass().add("block-bottom-left");
@@ -128,50 +155,51 @@ public class GameController {
                         txtField.getStyleClass().add("block-bottom");
                     }
                 }
-                //bordes izquierdos que no son esquinas
+                // Left non-corner borders.
                 if ((j == 0 || j == 3) && !(i == 0 || i == 2 || i == 4 || i == 1 || i == 3 || i == 5)) {
                     txtField.getStyleClass().add("block-left");
                 }
-                //bordes derechos que no son esquinas
+                // Right non-corner borders.
                 if ((j == 2 || j == 5) && !(i == 0 || i == 2 || i == 4 || i == 1 || i == 3 || i == 5)) {
                     txtField.getStyleClass().add("block-right");
                 }
 
+                // If the cell value is not zero, display it and disable editing.
                 if (value != 0) {
                     txtField.setText(value.toString());
                     txtField.setEditable(false);
                 } else {
+                    // Otherwise, add a listener to validate input.
                     txtField.textProperty().addListener(new ChangeListener<String>() {
                         @Override
                         public void changed(ObservableValue<? extends String> textObservable, String previousText, String newValue) {
                             if (!newValue.isEmpty()) {
                                 if (newValue.matches("[1-6]")) {
-                                    // Verifica contra la solución guardada
+                                    // Validate against the saved solution.
                                     if (Integer.parseInt(newValue) == solution.get(finalI).get(finalJ)) {
-                                        // Actualiza el estado del juego
+                                        // Update game status.
                                         gameStatus.get(finalI).set(finalJ, Integer.parseInt(newValue));
                                         txtField.setEditable(false);
-                                        // Añade clase para celda correcta
+                                        // Update cell style for a correct answer.
                                         txtField.getStyleClass().remove("grid-cell-incorrect");
                                         txtField.getStyleClass().add("grid-cell-correct");
 
                                         correctCellsCount++;
                                         if (correctCellsCount == TOTAL_CELLS) {
                                             try {
-                                                //gano
+                                                // Player has won the game.
                                                 TryAgainView.getInstance().getController().setGameResult(true);
                                                 GameView.deleteInstance();
                                             } catch (IOException e) {
                                                 throw new RuntimeException(e);
                                             }
                                         }
-
                                     } else {
-                                        // Número incorrecto
+                                        // Incorrect number: clear input and add error style.
                                         txtField.setText("");
                                         txtField.getStyleClass().remove("grid-cell-correct");
                                         txtField.getStyleClass().add("grid-cell-incorrect");
-                                        // Remueve la clase después de un momento
+                                        // Remove error style after a short delay.
                                         new java.util.Timer().schedule(
                                                 new java.util.TimerTask() {
                                                     @Override
@@ -185,7 +213,7 @@ public class GameController {
                                         );
                                         incorrectCellsCount++;
                                         if (incorrectCellsCount == 3) {
-                                            //perdio
+                                            // Player has lost the game.
                                             try {
                                                 TryAgainView.getInstance().getController().setGameResult(false);
                                                 GameView.deleteInstance();
@@ -195,70 +223,58 @@ public class GameController {
                                         }
                                     }
                                 } else {
-                                    // No es un número del 1 al 6
+                                    // Input is not a valid digit (1-6): clear the field and show warning.
                                     txtField.setText("");
-                                    alertHelper.showWarning("Caracter incorrecto","Caracter incorrecto","Solo se permite el ingreso de digitos del 1 al 6");
+                                    alertHelper.showWarning("Caracter incorrecto", "Caracter incorrecto", "Solo se permite el ingreso de digitos del 1 al 6");
                                 }
                             }
                         }
                     });
                 }
 
-
+                // Configure the TextField to expand and fill the cell.
                 txtField.setPrefWidth(Double.MAX_VALUE);
                 txtField.setPrefHeight(Double.MAX_VALUE);
                 GridPane.setHgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
                 GridPane.setVgrow(txtField, javafx.scene.layout.Priority.ALWAYS);
 
-
-                gridPane.add(txtField, j, i); // j es columna, i es fila
+                // Add the TextField to the GridPane at the specified column (j) and row (i).
+                gridPane.add(txtField, j, i);
             }
         }
     }
 
+    /**
+     * Handles the exit button action by saving the current game state and closing the game view.
+     *
+     * @param event The action event triggered by clicking the exit button.
+     * @throws IOException if an error occurs during the game state saving process.
+     */
     @FXML
     void btnExit(ActionEvent event) throws IOException {
         saveGame();
     }
 
+    /**
+     * Handles the help button action by using a HelpButtonAdapter to fill in the empty cells of the Sudoku board
+     * with the solution and check for a win condition.
+     *
+     * @param event The action event triggered by clicking the help button.
+     * @throws IOException if an error occurs during the help action.
+     */
     @FXML
     void btnHelp(ActionEvent event) throws IOException {
-        for(int i = 0; i < 6; i++) {
-            for(int j = 0; j < 6; j++) {
-                if(gameStatus.get(i).get(j) == 0) {
-                    // Obtiene el valor de la solución para esta celda
-                    int solutionValue = solution.get(i).get(j);
-
-                    // Actualiza el estado del juego
-                    gameStatus.get(i).set(j, solutionValue);
-
-                    // Busca el TextField existente en el GridPane
-                    for (Node node : gridPane.getChildren()) {
-                        if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
-                            // Asegúrate de que sea un TextField
-                            if (node instanceof TextField) {
-                                TextField txtField = (TextField) node;
-
-                                // Actualiza el TextField con el valor de la solución
-                                txtField.setText(String.valueOf(solutionValue));
-                                txtField.setEditable(false);
-
-                                // Opcionalmente, puedes añadir una clase especial para indicar que es una ayuda
-                                txtField.getStyleClass().add("grid-cell-hint");
-
-                                // Solo ayudamos con una celda, así que salimos de la función
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        TryAgainView.getInstance().getController().setGameResult(true);
-        GameView.deleteInstance();
+        // Use the adapter to show the solution for empty cells and verify win condition.
+        HelpButtonAdapter helpAdapter = new HelpButtonAdapter(gameStatus, solution, gridPane);
+        helpAdapter.showHelp();
     }
 
+    /**
+     * Saves the current game state to a file named "SudokuStatus.ser" by serializing the Sudoku model,
+     * the game status, and the solution. After saving, the game view is closed.
+     *
+     * @throws IOException if an I/O error occurs during saving.
+     */
     private void saveGame() throws IOException {
         FileOutputStream fileOut = new FileOutputStream("SudokuStatus.ser");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -269,7 +285,7 @@ public class GameController {
         fileOut.close();
         GameView.deleteInstance();
     }
-
 }
+
 
 

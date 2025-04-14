@@ -9,48 +9,61 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The HelpButtonAdapter class is responsible for handling the logic when the help button is clicked in the Sudoku game.
+ * It provides assistance by filling in the empty cells with the correct solution values and checks if the player has won the game.
+ */
 public class HelpButtonAdapter {
 
     private ArrayList<ArrayList<Integer>> gameStatus;
     private ArrayList<ArrayList<Integer>> solution;
     private GridPane gridPane;
     private int correctCellsCount = 0;
-    private final int TOTAL_CELLS = 36; // Total de celdas en un Sudoku 6x6
+    private final int TOTAL_CELLS = 36; // Total of cells in a 6x6 Sudoku grid
 
-    // Constructor
+    /**
+     * Constructs a new HelpButtonAdapter object with the given game status, solution, and grid pane.
+     *
+     * @param gameStatus The current state of the game board (the values the user has entered).
+     * @param solution The correct solution for the Sudoku puzzle.
+     * @param gridPane The grid pane that contains the cells (TextFields).
+     */
     public HelpButtonAdapter(ArrayList<ArrayList<Integer>> gameStatus, ArrayList<ArrayList<Integer>> solution, GridPane gridPane) {
         this.gameStatus = gameStatus;
         this.solution = solution;
         this.gridPane = gridPane;
     }
 
-    // Método que maneja la acción del botón de ayuda
+    /**
+     * Handles the action when the help button is clicked.
+     * It fills in empty cells (value 0) with the correct solution value and updates the game status and grid.
+     */
     public void showHelp() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                // Si la celda está vacía (valor 0)
+                // If the cell is empty (value 0)
                 if (gameStatus.get(i).get(j) == 0) {
-                    // Obtener el valor de la solución para esta celda
+                    // Get the solution value for this cell
                     int solutionValue = solution.get(i).get(j);
 
-                    // Actualiza el estado del juego
+                    // Update the game status
                     gameStatus.get(i).set(j, solutionValue);
 
-                    // Busca el TextField existente en el GridPane
+                    // Find the corresponding TextField in the GridPane
                     for (Node node : gridPane.getChildren()) {
                         if (GridPane.getRowIndex(node) == i && GridPane.getColumnIndex(node) == j) {
-                            // Asegúrate de que sea un TextField
+                            // Ensure it is a TextField
                             if (node instanceof TextField) {
                                 TextField txtField = (TextField) node;
 
-                                // Actualiza el TextField con el valor de la solución
+                                // Update the TextField with the solution value
                                 txtField.setText(String.valueOf(solutionValue));
-                                txtField.setEditable(false); // Desactivar edición después de mostrar la ayuda
+                                txtField.setEditable(false); // Disable editing after showing the help
 
-                                // Opcionalmente, puedes añadir una clase especial para indicar que es una ayuda
+                                // Optionally, add a class to indicate that this cell has been filled with help
                                 txtField.getStyleClass().add("grid-cell-hint");
 
-                                // Solo ayudamos con una celda a la vez
+                                // Only provide help for one cell at a time
                                 return;
                             }
                         }
@@ -59,15 +72,18 @@ public class HelpButtonAdapter {
             }
         }
 
-        // Verificar si el jugador ha ganado después de mostrar la ayuda
+        // Check if the player has won after showing the help
         checkForWin();
     }
 
-    // Verificar si todas las celdas están correctas
+    /**
+     * Checks if the player has won the game by comparing the game status with the solution.
+     * If all cells are correct, the game is considered won.
+     */
     private void checkForWin() {
         correctCellsCount = 0;
 
-        // Contar cuántas celdas están correctas
+        // Count how many cells are correct
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 if (gameStatus.get(i).get(j).equals(solution.get(i).get(j))) {
@@ -76,9 +92,9 @@ public class HelpButtonAdapter {
             }
         }
 
-        // Si todas las celdas están correctas, el jugador ha ganado
+        // If all cells are correct, the player has won
         if (correctCellsCount == TOTAL_CELLS) {
-            // Lógica para indicar que el jugador ha ganado
+            // Logic to indicate that the player has won
             try {
                 TryAgainView.getInstance().getController().setGameResult(true);
                 GameView.deleteInstance();
@@ -88,4 +104,5 @@ public class HelpButtonAdapter {
         }
     }
 }
+
 

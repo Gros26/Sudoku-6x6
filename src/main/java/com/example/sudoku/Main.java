@@ -10,23 +10,34 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main class that launches the Sudoku application.
+ * This class extends the {@link javafx.application.Application} class and serves
+ * as the entry point for the application.
+ */
 public class Main extends Application {
 
+    /**
+     * Main method which is the entry point of the application.
+     * It launches the JavaFX application by calling {@link Application#launch(String...)}.
+     *
+     * @param args Command line arguments (not used in this case).
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * The start method is called when the application is launched. It initializes
+     * the primary stage and loads the initial view of the Sudoku game.
+     *
+     * @param primaryStage The main window of the application (Stage).
+     * @throws Exception if there is an error loading the FXML view or setting up the stage.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Launches the StartView singleton instance
         StartView.getInstance();
     }
-
-    /*
-    Falta
-    1. Que se muestre erorr algo rojo o asi cuando digite mal
-    2. Cada bloque se debe llenar con dos numero
-    3. El boton de ayuda
-    4.
-     */
-
 }
+
