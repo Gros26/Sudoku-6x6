@@ -244,8 +244,6 @@ public class GameController {
                                 txtField.setText(String.valueOf(solutionValue));
                                 txtField.setEditable(false);
 
-
-                                System.out.println(correctCellsCount);
                                 return;
                             }
                         }
