@@ -25,7 +25,7 @@ import java.util.Random;
  * validating moves, handling game outcomes, and saving the game state.
  * </p>
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 2.0
  */
 public class GameController {

@@ -7,7 +7,7 @@ import java.util.Objects;
  * The Coordinate class represents a pair of row and column indices for a cell in a Sudoku grid.
  * It is used to keep track of the position of a cell in the grid.
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 1.0
  */
 public class Coordinate implements Serializable {

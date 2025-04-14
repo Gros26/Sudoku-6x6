@@ -16,7 +16,7 @@ import java.io.IOException;
  * This view is displayed when the user starts a new game, showing the Sudoku grid and associated controls.
  * It follows the Singleton design pattern to ensure that only one instance of the GameView exists at any given time.
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 2.0
  */
 public class GameView extends Stage {

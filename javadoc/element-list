@@ -1,0 +1,6 @@
+module:com.example.sudoku
+com.example.sudoku
+com.example.sudoku.controller
+com.example.sudoku.model
+com.example.sudoku.utils
+com.example.sudoku.view

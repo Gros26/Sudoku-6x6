@@ -15,7 +15,7 @@ import java.io.IOException;
  * The view is created and displayed by loading the corresponding FXML file.
  * It follows the Singleton design pattern to ensure only one instance of the view exists at a time.
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 1.0
  */
 public class TryAgainView extends Stage {

@@ -8,7 +8,7 @@ package com.example.sudoku.utils;
  * <p>Note: The constants in this class point to the resources, and it is recommended to replace
  * the static string constants with an {@link Enum} for better type safety and organization in the future.</p>
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 3.0
  */
 public class Path {

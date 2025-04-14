@@ -15,7 +15,7 @@ import java.io.IOException;
  * This class extends the {@link javafx.application.Application} class and serves
  * as the entry point for the application.
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 1.0
  */
 public class Main extends Application {

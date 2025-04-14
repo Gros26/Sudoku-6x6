@@ -15,7 +15,7 @@ import java.util.Scanner;
  *
  * <p>The class also handles generating random Sudoku boards and checking if the user's moves are correct.</p>
  * @author Juan David Lopez
- * @author Grosman Klein Valencia
+ * @author Grosman Klein Garcia Valencia
  * @version 1.0
  */
 public class Sudoku implements Serializable {

@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
  * The AlertHelper class provides methods for displaying different types of alerts (error, warning, information)
  * using JavaFX's Alert dialog. It implements the IAlert interface to provide custom alert functionality.
  * @author Juan David Lopez
+ * @author Grosman Klein Garcia Valencia
  * @version 1.0
  */
 public class AlertHelper implements IAlert {
